@@ -17,7 +17,7 @@
     export default {
         data:function(){
             return {
-                quoteTitle:'The Quote!'
+                quoteTitle:'The Quote.vue!'
             }
         },
         components: {
