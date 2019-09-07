@@ -5,67 +5,94 @@
     </div>
     <nav>
       <ul>
-        <li>
+        <li v-if="!isAuthenticated">
           <router-link to="/signup">Sign Up</router-link>
         </li>
-        <li>
+        <li v-if="!isAuthenticated">
           <router-link to="/signin">Sign In</router-link>
         </li>
-        <li>
+        <li v-if="isAuthenticated">
           <router-link to="/dashboard">Dashboard</router-link>
+        </li>
+        <li v-if="isAuthenticated">
+          <button @click="logout"
+                  class="logout">Logout</button>
         </li>
       </ul>
     </nav>
   </header>
 </template>
-
+<script>
+export default {
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  },
+  methods: {
+    logout() {
+      if (confirm("Are you sure?")) {
+        this.$store.dispatch("logout");
+      }
+    }
+  }
+};
+</script>
 <style scoped>
-  #header {
-    height: 56px;
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #521751;
-    padding: 0 20px;
-  }
+#header {
+  height: 56px;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #521751;
+  padding: 0 20px;
+}
 
-  .logo {
-    font-weight: bold;
-    color: white;
-  }
+.logo {
+  font-weight: bold;
+  color: white;
+}
 
-  .logo a {
-    text-decoration: none;
-    color: white;
-  }
+.logo a {
+  text-decoration: none;
+  color: white;
+}
 
-  nav {
-    height: 100%;
-  }
+nav {
+  height: 100%;
+}
 
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-  }
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
 
-  li {
-    margin: 0 16px;
-  }
+li {
+  margin: 0 16px;
+}
 
-  li a {
-    text-decoration: none;
-    color: white;
-  }
+li a {
+  text-decoration: none;
+  color: white;
+}
 
-  li a:hover,
-  li a:active,
-  li a.router-link-active {
-    color: #fa923f;
-  }
+li a:hover,
+li a:active,
+li a.router-link-active {
+  color: #fa923f;
+}
+
+.logout {
+  background: transparent;
+  border: none;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
 </style>
