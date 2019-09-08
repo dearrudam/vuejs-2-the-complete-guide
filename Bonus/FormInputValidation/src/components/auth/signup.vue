@@ -13,7 +13,6 @@
           <p v-if="!$v.email.required">Email address is required</p>
           <p v-if="!$v.email.email">Please provide a valid email address</p>
           <p v-if="!$v.email.unique">Email address is already used</p>
-          
         </div>
         <div class="input" :class="{ invalid: $v.age.$error }">
           <label for="age">Your Age</label>
