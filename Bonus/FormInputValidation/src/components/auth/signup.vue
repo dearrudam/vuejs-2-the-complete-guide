@@ -12,6 +12,8 @@
           />
           <p v-if="!$v.email.required">Email address is required</p>
           <p v-if="!$v.email.email">Please provide a valid email address</p>
+          <p v-if="!$v.email.unique">Email address is already used</p>
+          
         </div>
         <div class="input" :class="{ invalid: $v.age.$error }">
           <label for="age">Your Age</label>
@@ -83,7 +85,11 @@
                 X
               </button>
               <p v-if="!$v.hobbyInputs.$each[index].value.minLength">
-                Hobbie must have at least {{ $v.hobbyInputs.$each[index].value.$params.minLength.min }} letters
+                Hobbie must have at least
+                {{
+                  $v.hobbyInputs.$each[index].value.$params.minLength.min
+                }}
+                letters
               </p>
               <p v-if="!$v.hobbyInputs.$each[index].value.required">
                 Please provide a valid hobbie
@@ -125,7 +131,7 @@ import {
   sameAs
 } from "vuelidate/lib/validators";
 
-import axios from "./../../axios-auth";
+import axios from "axios";
 
 export default {
   data() {
@@ -149,7 +155,21 @@ export default {
       required,
       email,
       unique: val => {
-        return val !== 'dearrudam@gmail.com';
+        return axios.get("/users.json", {
+          headers:{
+            'Content-type':'application/json'
+          },
+          params:{
+            orderBy: '"email"',
+            equalTo: `"${val}"`
+          }
+        }).then(res => {
+          console.log(res);
+          return Object.keys(res.data).length === 0;
+        }).catch(error=>{
+          console.log(error);
+          return false;
+        });
       }
     },
     age: {
